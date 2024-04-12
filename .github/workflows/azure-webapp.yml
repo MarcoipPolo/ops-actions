@@ -29,6 +29,11 @@ on:
         type: string
         required: false
 
+      startup_command:
+        description: A startup command, for example "dotnet run".
+        type: string
+        required: false
+
     secrets:
       AZURE_CLIENT_ID:
         description: The client ID of the Azure AD service principal to use for authenticating to Azure.
@@ -84,6 +89,7 @@ jobs:
         with:
           app-name: ${{ inputs.app_name }}
           images: ${{ inputs.image }}
+          startup-command: ${{ inputs.startup_command }}
 
       - name: Configure app settings
         if: inputs.app_settings != ''
