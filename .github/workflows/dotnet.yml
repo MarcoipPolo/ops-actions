@@ -38,6 +38,12 @@ on:
         required: false
         default: false
 
+      property:
+        description: A semicolon-separated string of <key>=<value> pairs.
+        type: string
+        required: false
+        default: ""
+
       test_project:
         description: Specify the path of a test project or solution file, or the path of a directory containing a test project or solution file. Pass a newline-separated string to specify multiple test projects.
         type: string
@@ -99,7 +105,9 @@ jobs:
 
       # Build the application for release/deployment.
       - name: Dotnet build
-        run: dotnet build "$PROJECT" --configuration "$CONFIGURATION" --runtime "$RUNTIME" --self-contained "$SELF_CONTAINED" --no-restore
+        env:
+          PROPERTY: ${{ inputs.property }}
+        run: dotnet build "$PROJECT" --configuration "$CONFIGURATION" --runtime "$RUNTIME" --self-contained "$SELF_CONTAINED" --property:"$PROPERTY" --no-restore
 
       # Execute unit tests.
       - name: Dotnet test
